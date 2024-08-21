@@ -1,9 +1,12 @@
+import { useAppSelector } from "./app/hooks";
+
+// Home Page
 function App() {
-  // Home Page
+  const { user } = useAppSelector((state) => state.auth);
   return (
     <>
       <div className="text-center">
-        <h2>Home</h2>
+        {user ? <h2>Welcome, {user.username}</h2> : <h2>Home</h2>}
       </div>
     </>
   );
