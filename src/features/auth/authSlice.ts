@@ -9,7 +9,12 @@ import axios from "axios";
 import authService from "./authService";
 
 const user = localStorage.getItem("user");
-const parsedUser = user ? JSON.parse(user) : null;
+let parsedUser;
+if (user && user !== undefined) {
+  parsedUser = JSON.parse(user);
+} else {
+  parsedUser = null;
+}
 
 const initialState: AuthStateType = {
   user: parsedUser,
