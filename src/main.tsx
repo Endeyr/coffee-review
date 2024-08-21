@@ -6,6 +6,8 @@ import App from "./App.tsx";
 import { store } from "./app/store.ts";
 import ErrorPage from "./error-page.tsx";
 import "./index.css";
+import LoginPage from "./routes/auth/Login.tsx";
+import RegisterPage from "./routes/auth/Register.tsx";
 import Root from "./routes/root.tsx";
 
 const router = createBrowserRouter([
@@ -13,7 +15,11 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
-    children: [{ path: "", element: <App /> }],
+    children: [
+      { path: "", element: <App /> },
+      { path: "auth/login", element: <LoginPage /> },
+      { path: "auth/register", element: <RegisterPage /> },
+    ],
   },
 ]);
 
