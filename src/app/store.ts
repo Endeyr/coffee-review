@@ -1,3 +1,4 @@
+import { authSlice } from "@/features/auth/authSlice";
 import {
   type Action,
   type ThunkAction,
@@ -6,7 +7,8 @@ import {
 } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
-const rootReducer = combineSlices();
+const rootReducer = combineSlices(authSlice);
+
 export const makeStore = () => {
   const store = configureStore({
     reducer: rootReducer,
