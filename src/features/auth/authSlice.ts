@@ -88,6 +88,7 @@ export const authSlice = createAppSlice({
         state.isLoading = true;
       })
       .addCase(userRegister.fulfilled, (state, action) => {
+        state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
@@ -103,6 +104,7 @@ export const authSlice = createAppSlice({
         state.isLoading = true;
       })
       .addCase(userLogin.fulfilled, (state, action) => {
+        state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
@@ -115,6 +117,9 @@ export const authSlice = createAppSlice({
         state.user = null;
       })
       .addCase(userLogout.fulfilled, (state) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.message = "User successfully logged out";
         state.user = null;
       });
   },
