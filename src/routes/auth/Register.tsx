@@ -59,7 +59,10 @@ const RegisterPage = () => {
       ) : (
         <>
           <h2>Register</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-2"
+          >
             <RegisterFormField
               type="text"
               label="username"

@@ -61,7 +61,10 @@ const LoginPage = () => {
       ) : (
         <>
           <h2>Login</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-2"
+          >
             <LoginFormField
               type="email"
               label="email"
