@@ -16,6 +16,9 @@ const register = async (userData: RegisterFormDataType): Promise<UserType> => {
     userData,
   );
   if (response.data) {
+    if (response.data.data === undefined) {
+      throw new Error("user response undefined");
+    }
     localStorage.setItem("user", JSON.stringify(response.data.data));
   }
 
@@ -28,6 +31,9 @@ const login = async (userData: LoginFormDataType): Promise<UserType> => {
     userData,
   );
   if (response.data) {
+    if (response.data.data === undefined) {
+      throw new Error("user response undefined");
+    }
     localStorage.setItem("user", JSON.stringify(response.data.data));
   }
   return response.data.data;
