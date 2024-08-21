@@ -36,12 +36,10 @@ const RegisterPage = () => {
   };
 
   useEffect(() => {
-    if (isError) {
-      console.error(message);
-    }
-    if (isSuccess || user) {
-      navigate("/dashboard");
-    }
+    if (isError) console.error(message);
+
+    if (isSuccess || user) navigate("/");
+
     setTimeout(() => dispatch(userReset()), 10);
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
