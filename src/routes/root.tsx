@@ -12,7 +12,7 @@ const Root = () => {
   return (
     <section className="w-full h-screen">
       <Navbar />
-      <div className="flex flex-col items-center justify-center h-full gap-2">
+      <div className="flex h-[91dvh] flex-col items-center justify-center gap-2">
         <Outlet
           context={{
             username,
