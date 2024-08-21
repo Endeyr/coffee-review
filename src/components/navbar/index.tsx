@@ -24,12 +24,12 @@ const Navbar = () => {
       </>
       <>
         <Button>
-          <Link to={"auth/login"}></Link>
+          <Link to={"auth/login"}>Login</Link>
         </Button>
         <Button>
-          <Link to={"auth/register"}></Link>
+          <Link to={"auth/register"}>Register</Link>
         </Button>
-        <Button onClick={onLogout}></Button>
+        <Button onClick={onLogout}>Logout</Button>
       </>
       {/* Mobile Nav */}
     </>
