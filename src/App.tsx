@@ -1,10 +1,9 @@
 function App() {
+  // Home Page
   return (
     <>
       <div className="text-center">
-        <h2>
-          Vite + Redux + Zod + React-Hook-Form + Tailwind + ShadCn Template
-        </h2>
+        <h2>Home</h2>
       </div>
     </>
   );
