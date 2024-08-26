@@ -1,3 +1,4 @@
+import { API_URL } from "@/lib/const";
 import type {
   UserResponseDataType,
   UserType,
@@ -7,8 +8,6 @@ import type {
   RegisterFormDataType,
 } from "@/types/routes/auth/types";
 import axios from "axios";
-
-const API_URL = `${import.meta.env.VITE_API_URL}/user/`;
 
 const register = async (userData: RegisterFormDataType): Promise<UserType> => {
   const response = await axios.post<UserResponseDataType>(

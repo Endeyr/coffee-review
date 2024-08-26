@@ -16,6 +16,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@googlemaps/markerclusterer": "^2.5.3",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@reduxjs/toolkit": "^2.2.7",
@@ -23,6 +24,7 @@
     "@types/npm": "^7.19.3",
     "@types/react-redux": "^7.1.33",
     "@types/react-router-dom": "^5.3.3",
+    "@vis.gl/react-google-maps": "^1.1.0",
     "axios": "^1.7.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -47,6 +49,7 @@
     "@types/autoprefixer": "^10.2.0",
     "@types/eslint__js": "^8.42.3",
     "@types/eslint-config-prettier": "^6.11.3",
+    "@types/google.maps": "^3.55.12",
     "@types/node": "^22.2.0",
     "@types/prettier": "^2.7.3",
     "@types/react": "^18.3.3",
