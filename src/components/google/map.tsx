@@ -139,14 +139,16 @@ const MapComponent = () => {
   };
 
   return (
-    <Map
-      style={{ width: "80dvw", height: "80dvh" }}
-      defaultCenter={{ lat: 39.9612, lng: -82.9988 }}
-      defaultZoom={11}
-      gestureHandling={"greedy"}
-      disableDefaultUI={true}
-      mapId="COFFEE_MAP_ID"
-    ></Map>
+    <>
+      <Map
+        style={{ width: "80dvw", height: "80dvh" }}
+        defaultCenter={{ lat: 39.9612, lng: -82.9988 }}
+        defaultZoom={11}
+        gestureHandling={"greedy"}
+        disableDefaultUI={true}
+        mapId="COFFEE_MAP_ID"
+      ></Map>
+    </>
   );
 };
 export default MapComponent;

@@ -1,4 +1,5 @@
 import { authSlice } from "@/features/auth/authSlice";
+import { mapSlice } from "@/features/google/mapSlice";
 import {
   type Action,
   type ThunkAction,
@@ -7,7 +8,7 @@ import {
 } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
-const rootReducer = combineSlices(authSlice);
+const rootReducer = combineSlices(authSlice, mapSlice);
 
 export const makeStore = () => {
   const store = configureStore({
