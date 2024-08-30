@@ -1,5 +1,4 @@
 import type { ILocationMarker } from "./../../components/google/types";
-
 type Latitude = number & { __brand: "Latitude" };
 type Longitude = number & { __brand: "Longitude" };
 
@@ -17,9 +16,12 @@ export function validateLongitude(lng: number): Longitude {
   return lng as Longitude;
 }
 
-export interface ILocation {
-  lat: Latitude;
-  lng: Longitude;
+export interface ILocation extends google.maps.places.PlaceResult {
+  position: {
+    lat: Latitude;
+    lng: Longitude;
+  };
+  geometry?: google.maps.places.PlaceResult["geometry"];
 }
 
 export interface IMapState {
