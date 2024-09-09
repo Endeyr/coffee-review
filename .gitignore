@@ -28,6 +28,7 @@ dist-ssr
 *.mongodb.js
 coverage
 notes.md
+todo.md
 
 # Docker
 .dockerignore
