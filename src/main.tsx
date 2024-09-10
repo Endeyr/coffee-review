@@ -8,6 +8,7 @@ import ErrorPage from "./error-page.tsx";
 import "./index.css";
 import LoginPage from "./routes/auth/LoginPage.tsx";
 import RegisterPage from "./routes/auth/RegisterPage.tsx";
+import MapPage from "./routes/google/MapPage.tsx";
 import Root from "./routes/root.tsx";
 
 const router = createBrowserRouter([
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: "", element: <App /> },
       { path: "auth/login", element: <LoginPage /> },
       { path: "auth/register", element: <RegisterPage /> },
+      { path: "google/map", element: <MapPage /> },
     ],
   },
 ]);
