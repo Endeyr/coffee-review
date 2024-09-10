@@ -1,52 +1,56 @@
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import type { RootState } from "@/app/store";
+import mapService from "@/features/google/mapService";
+import {
+  isLocationOpenThunk,
+  searchLocationThunk,
+} from "@/features/google/mapSlice";
 import type { ILocationMarker } from "@/types/components/google/types";
+import {
+  validateLatitude,
+  validateLongitude,
+} from "@/types/features/google/types";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { Map, useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 const MapComponent = () => {
+  const dispatch = useAppDispatch();
   const map = useMap();
   const placesLib = useMapsLibrary("places");
-
-  const [placesService, setPlacesService] =
-    useState<google.maps.places.PlacesService | null>(null);
-  const [markers, setMarkers] = useState<ILocationMarker[]>([]);
   const markerClusterRef = useRef<MarkerClusterer | null>(null);
+  const placesServiceRef = useRef<google.maps.places.PlacesService | null>(
+    null,
+  );
+  const { markers } = useAppSelector((state: RootState) => state.map);
+
+  // this will change to user input / geolocation
+  const lat = validateLatitude(39.9612);
+  const lng = validateLongitude(-82.9988);
+  const radius = 14000;
+  const type = "cafe";
 
   useEffect(() => {
     if (!placesLib || !map) return;
-    setPlacesService(new placesLib.PlacesService(map));
+    placesServiceRef.current = new placesLib.PlacesService(map);
   }, [placesLib, map]);
 
   useEffect(() => {
-    if (!placesService) return;
-
+    if (!placesServiceRef.current || !map) return;
     const searchLocations = () => {
-      placesService.nearbySearch(
-        {
-          location: { lat: 39.9612, lng: -82.9988 },
-          radius: 14000,
-          type: "cafe",
-        },
-        async (
-          results: google.maps.places.PlaceResult[] | null,
-          status: google.maps.places.PlacesServiceStatus,
-        ) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-            setMarkers([]);
-            for (const result of results) {
-              if (result) {
-                await addLocationMarker(result);
-              }
-            }
-          } else {
-            console.error("Places search failed:", status);
-          }
-        },
+      dispatch(
+        searchLocationThunk({
+          placesService:
+            placesServiceRef.current as google.maps.places.PlacesService,
+          location: { position: { lat, lng } },
+          radius,
+          type,
+        }),
       );
     };
 
     searchLocations();
-  }, [placesService]);
+  }, [dispatch, lat, lng, radius, type, map]);
 
   useEffect(() => {
     if (!map || markers.length === 0) return;
@@ -55,15 +59,7 @@ const MapComponent = () => {
       markerClusterRef.current.clearMarkers();
     }
 
-    const googleMarkers = markers.map((marker) => {
-      const markerInstance = new google.maps.Marker({
-        position: marker.position,
-        title: `${marker.name} (${marker.isOpen ? "Open" : "Closed"})`,
-      });
-
-      markerInstance.addListener("click", () => handleMarkerClick(marker));
-      return markerInstance;
-    });
+    const googleMarkers = mapService.googleMarkers(markers, handleMarkerClick);
 
     markerClusterRef.current = new MarkerClusterer({
       map,
@@ -71,78 +67,28 @@ const MapComponent = () => {
     });
   }, [map, markers]);
 
-  const isLocationOpen = useCallback(
-    async (placeId: string): Promise<boolean> => {
-      return new Promise((resolve) => {
-        if (!placesService) {
-          resolve(false);
-          return;
-        }
-        placesService.getDetails(
-          {
-            placeId: placeId,
-            fields: ["opening_hours", "utc_offset_minutes"],
-          },
-          async (
-            placeDetails: google.maps.places.PlaceResult | null,
-            detailStatus: google.maps.places.PlacesServiceStatus,
-          ) => {
-            if (
-              detailStatus === google.maps.places.PlacesServiceStatus.OK &&
-              placeDetails &&
-              placeDetails.opening_hours
-            ) {
-              resolve(placeDetails.opening_hours.isOpen() ?? false);
-            } else {
-              resolve(false);
-            }
-          },
-        );
-      });
+  const handleMarkerClick = useCallback(
+    async (marker: ILocationMarker) => {
+      if (!placesServiceRef.current) return;
+
+      dispatch(
+        isLocationOpenThunk({
+          placesService: placesServiceRef.current,
+          placeId: marker.id,
+        }),
+      );
+
+      // TODO Popup with location info
+      alert(`${marker.name} was clicked!`);
     },
-    [placesService],
+    [dispatch],
   );
-
-  const addLocationMarker = useCallback(
-    async (location: google.maps.places.PlaceResult) => {
-      if (
-        !location.place_id ||
-        !location.geometry ||
-        !location.geometry.location
-      )
-        return;
-
-      const isOpen = await isLocationOpen(location.place_id);
-
-      if (markers.some((marker) => marker.id === location.place_id)) return;
-
-      setMarkers((prev) => [
-        ...prev,
-        {
-          id: `${location.place_id}`,
-          name: `${location.name}`,
-          position: {
-            lat: location.geometry?.location?.lat() || 0,
-            lng: location.geometry?.location?.lng() || 0,
-          },
-          isOpen: isOpen,
-        },
-      ]);
-    },
-    [isLocationOpen],
-  );
-
-  const handleMarkerClick = (marker: ILocationMarker) => {
-    alert(
-      `${marker.name} was clicked! It is currently ${marker.isOpen ? "open" : "closed"}.`,
-    );
-  };
 
   return (
     <>
       <Map
         style={{ width: "80dvw", height: "80dvh" }}
-        defaultCenter={{ lat: 39.9612, lng: -82.9988 }}
+        defaultCenter={{ lat, lng }}
         defaultZoom={11}
         gestureHandling={"greedy"}
         disableDefaultUI={true}

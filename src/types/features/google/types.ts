@@ -26,7 +26,6 @@ export interface ILocation extends google.maps.places.PlaceResult {
 
 export interface IMapState {
   markers: ILocationMarker[];
-  placesService: google.maps.places.PlacesService | null;
   isError: boolean;
   isSuccess: boolean;
   isLoading: boolean;

@@ -7,7 +7,6 @@ import mapService from "./mapService";
 
 const initialState: IMapState = {
   markers: [],
-  placesService: null,
   isError: false,
   isSuccess: false,
   isLoading: true,
@@ -16,17 +15,22 @@ const initialState: IMapState = {
 
 export const searchLocationThunk = createAsyncThunk<
   ILocationMarker[],
-  { location: ILocation; radius: number; type: string },
+  {
+    placesService: google.maps.places.PlacesService;
+    location: ILocation;
+    radius: number;
+    type: string;
+  },
   { state: RootState; rejectValue: string }
 >("map/searchLocation", async (params, thunkAPI) => {
-  const { location, radius, type } = params;
+  const { placesService, location, radius, type } = params;
   const { map } = thunkAPI.getState();
-  if (!map.placesService) {
+  if (!placesService) {
     return thunkAPI.rejectWithValue("Places service not initialized");
   }
   try {
     const locations = await mapService.searchLocation(
-      map.placesService,
+      placesService,
       location,
       radius,
       type,
@@ -35,7 +39,7 @@ export const searchLocationThunk = createAsyncThunk<
       return thunkAPI.rejectWithValue("No locations found");
 
     const newMarkers = await mapService.addLocationMarker(
-      map.placesService,
+      placesService,
       map.markers,
       locations,
     );
@@ -52,16 +56,17 @@ export const searchLocationThunk = createAsyncThunk<
 });
 
 export const isLocationOpenThunk = createAsyncThunk<
-  boolean,
-  string,
+  { id: string; isOpen: boolean },
+  { placesService: google.maps.places.PlacesService; placeId: string },
   { state: RootState; rejectValue: string }
->("map/isLocationOpen", async (placeId, thunkAPI) => {
-  const { map } = thunkAPI.getState();
-  if (!map.placesService) {
+>("map/isLocationOpen", async (params, thunkAPI) => {
+  const { placesService, placeId } = params;
+  if (!placesService) {
     return thunkAPI.rejectWithValue("Places service not initialized");
   }
   try {
-    return await mapService.isLocationOpen(map.placesService, placeId);
+    const isOpen = await mapService.isLocationOpen(placesService, placeId);
+    return { id: placeId, isOpen };
   } catch (error: unknown) {
     const message =
       error instanceof Error
@@ -75,15 +80,8 @@ export const mapSlice = createAppSlice({
   name: "map",
   initialState,
   reducers: {
-    setPlacesService: (
-      state,
-      action: PayloadAction<google.maps.places.PlacesService | null>,
-    ) => {
-      state.placesService = action.payload;
-    },
     mapReset: (state) => {
       state.markers = [];
-      state.placesService = null;
       state.isError = false;
       state.isLoading = false;
       state.message = "";
@@ -118,16 +116,19 @@ export const mapSlice = createAppSlice({
     });
     builder.addCase(
       isLocationOpenThunk.fulfilled,
-      (state, action: PayloadAction<boolean>) => {
+      (state, action: PayloadAction<{ id: string; isOpen: boolean }>) => {
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
         state.message = "Successfully found location hours";
-        console.log(action.payload);
+        const marker = state.markers.find((m) => m.id === action.payload.id);
+        if (marker) {
+          marker.isOpen = action.payload.isOpen;
+        }
       },
     );
   },
 });
 
-export const { mapReset, setPlacesService } = mapSlice.actions;
+export const { mapReset } = mapSlice.actions;
 export default mapSlice.reducer;
