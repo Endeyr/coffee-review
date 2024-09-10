@@ -6,8 +6,8 @@ import App from "./App.tsx";
 import { store } from "./app/store.ts";
 import ErrorPage from "./error-page.tsx";
 import "./index.css";
-import LoginPage from "./routes/auth/Login.tsx";
-import RegisterPage from "./routes/auth/Register.tsx";
+import LoginPage from "./routes/auth/LoginPage.tsx";
+import RegisterPage from "./routes/auth/RegisterPage.tsx";
 import Root from "./routes/root.tsx";
 
 const router = createBrowserRouter([
