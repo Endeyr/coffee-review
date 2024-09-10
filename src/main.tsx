@@ -9,6 +9,8 @@ import "./index.css";
 import LoginPage from "./routes/auth/LoginPage.tsx";
 import RegisterPage from "./routes/auth/RegisterPage.tsx";
 import MapPage from "./routes/google/MapPage.tsx";
+import AboutPage from "./routes/info/about.tsx";
+import ContactPage from "./routes/info/contact.tsx";
 import Root from "./routes/root.tsx";
 
 const router = createBrowserRouter([
@@ -21,6 +23,8 @@ const router = createBrowserRouter([
       { path: "auth/login", element: <LoginPage /> },
       { path: "auth/register", element: <RegisterPage /> },
       { path: "google/map", element: <MapPage /> },
+      { path: "info/about", element: <AboutPage /> },
+      { path: "info/contact", element: <ContactPage /> },
     ],
   },
 ]);
