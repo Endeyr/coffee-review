@@ -19,33 +19,43 @@ const Navbar = () => {
   return (
     <>
       {/* Desktop Nav */}
-      <nav className="flex justify-between">
-        <div className="flex items-center m-2">
-          <Button>
-            <Link to={"/"}>Home</Link>
-          </Button>
+      <header className="sticky top-0 z-50 hidden justify-between border-b bg-white dark:bg-black md:block">
+        <div className="flex h-16 items-center p-[50px]">
+          <div className="mx-auto w-full space-y-20">
+            <div className="flex justify-between">
+              {/* Left Side */}
+              <div className="flex items-center justify-start gap-4">
+                <Button>
+                  <Link to={"/"}>Home</Link>
+                </Button>
+              </div>
+              {/* Right Side */}
+              <nav className="flex items-center justify-end">
+                <ul className="flex items-center gap-4 space-x-1">
+                  {!user ? (
+                    <>
+                      <li>
+                        <Button>
+                          <Link to={"/auth/login"}>Login</Link>
+                        </Button>
+                      </li>
+                      <li>
+                        <Button>
+                          <Link to={"/auth/register"}>Register</Link>
+                        </Button>
+                      </li>
+                    </>
+                  ) : (
+                    <li>
+                      <Button onClick={onLogout}>Logout</Button>
+                    </li>
+                  )}
+                </ul>
+              </nav>
+            </div>
+          </div>
         </div>
-        <ul className="flex items-center gap-2 m-2">
-          {!user ? (
-            <>
-              <li>
-                <Button>
-                  <Link to={"/auth/login"}>Login</Link>
-                </Button>
-              </li>
-              <li>
-                <Button>
-                  <Link to={"/auth/register"}>Register</Link>
-                </Button>
-              </li>
-            </>
-          ) : (
-            <li>
-              <Button onClick={onLogout}>Logout</Button>
-            </li>
-          )}
-        </ul>
-      </nav>
+      </header>
       {/* Mobile Nav */}
     </>
   );

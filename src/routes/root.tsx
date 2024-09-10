@@ -8,9 +8,9 @@ import { Outlet } from "react-router-dom";
 const Root = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
-    <section className="h-screen w-full">
+    <section className="relative min-h-screen w-full">
       <Navbar />
-      <div className="flex h-[90dvh] flex-col items-center justify-center gap-2">
+      <main className="mx-auto">
         <Outlet
           context={
             {
@@ -19,7 +19,7 @@ const Root = () => {
             } satisfies IContext
           }
         />
-      </div>
+      </main>
       <Footer />
     </section>
   );
