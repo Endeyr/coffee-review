@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import type { IContext } from "@/types/routes/types";
 import { useState } from "react";
@@ -9,7 +10,7 @@ const Root = () => {
   return (
     <section className="h-screen w-full">
       <Navbar />
-      <div className="flex h-[91dvh] flex-col items-center justify-center gap-2">
+      <div className="flex h-[90dvh] flex-col items-center justify-center gap-2">
         <Outlet
           context={
             {
@@ -19,6 +20,7 @@ const Root = () => {
           }
         />
       </div>
+      <Footer />
     </section>
   );
 };
