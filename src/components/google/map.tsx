@@ -24,7 +24,7 @@ const MapComponent = () => {
   );
   const { markers } = useAppSelector((state: RootState) => state.map);
 
-  // this will change to user input / geolocation
+  // TODO change to user input / geolocation
   const lat = validateLatitude(39.9612);
   const lng = validateLongitude(-82.9988);
   const radius = 14000;

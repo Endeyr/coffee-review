@@ -36,6 +36,11 @@ const Navbar = () => {
                     <>
                       <li>
                         <Button>
+                          <Link to={"/google/map"}>Map</Link>
+                        </Button>
+                      </li>
+                      <li>
+                        <Button>
                           <Link to={"/auth/login"}>Login</Link>
                         </Button>
                       </li>
