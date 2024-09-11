@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import LoginFormField from "@/components/auth/LoginFormField";
+import Container from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { userLogin, userReset } from "@/features/auth/authSlice";
 import { loginSchema } from "@/schema/auth/schema";
@@ -52,7 +53,7 @@ const LoginPage = () => {
   }
 
   return (
-    <>
+    <Container className="flex-col">
       {user ? (
         <>
           <div>{user.username} already logged in</div>
@@ -87,7 +88,7 @@ const LoginPage = () => {
           </form>
         </>
       )}
-    </>
+    </Container>
   );
 };
 export default LoginPage;

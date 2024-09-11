@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import RegisterFormField from "@/components/auth/RegisterFormField";
+import Container from "@/components/container";
 import { Button } from "@/components/ui/button";
 import { userRegister, userReset } from "@/features/auth/authSlice";
 import { registerSchema } from "@/schema/auth/schema";
@@ -48,7 +49,7 @@ const RegisterPage = () => {
   }
 
   return (
-    <>
+    <Container className="flex-col">
       {user ? (
         <>
           <div>{user.username} already registered</div>
@@ -101,7 +102,7 @@ const RegisterPage = () => {
           </form>
         </>
       )}
-    </>
+    </Container>
   );
 };
 export default RegisterPage;
